@@ -7,6 +7,7 @@ export default function ImagePage({
   imgLoading,
   imageUrl,
   downloadImage,
+  searchRealImage,
 }) {
 
   return (
@@ -39,6 +40,12 @@ export default function ImagePage({
           ? "Generating..."
           : "Generate Image"}
       </button>
+      <button
+  onClick={searchRealImage}
+  className="w-full mt-4 py-4 rounded-2xl font-bold bg-zinc-700 hover:bg-zinc-600 transition"
+>
+  🌐 Search Real Image
+</button>
       <p>{imageUrl}</p>
 
       {imageUrl && (

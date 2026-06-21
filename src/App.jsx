@@ -42,9 +42,6 @@ export default function App() {
   const [activeTab, setActiveTab] =
     useState("video")
 
-  const [isLoggedIn, setIsLoggedIn] =
-    useState(false)
-
   const [userName, setUserName] =
     useState("")
 
@@ -329,34 +326,19 @@ setScriptCount(
     role: "user",
 
     content: `
-You are a professional content writer.
-
-Topic: ${topic}
-
-Create content in this exact format:
-
-Title:
-(Create a catchy title)
-
-Keywords:
-(5 SEO keywords separated by commas)
-
-Script:
-(Write an engaging script in simple Hindi language)
-
-Hashtags:
-(5 relevant hashtags)
-
-Call To Action:
-(Ask users to like, share and subscribe)
+Create a viral YouTube Shorts script about ${topic}.
 
 Rules:
-- Use easy Hindi
-- Keep it under 60 seconds
-- Make it engaging
-- No emojis
-- No complex formatting
-- Clean readable output
+- Detect the language of the user's topic.
+- If the topic is in Hindi, write the entire response in Hindi.
+- If the topic is in English, write the entire response in English.
+- Do not mix Hindi and English.
+- Give a clear title.
+- Give proper headings.
+- Give a creator-friendly script.
+- Do not use hashtags.
+- Do not use emojis.
+- Do not use special symbols.
 `,
   },
 ],
@@ -404,6 +386,7 @@ Rules:
 
       return
     }
+    
 
     if (!imagePrompt) {
 
@@ -411,15 +394,29 @@ Rules:
 
       return
     }
+    
 
     setImgLoading(true)
 
     try {
 
-    const image =
+    const enhancedPrompt = 
+`
+Create a realistic high quality image of ${imagePrompt}.
+
+Make it:
+- photorealistic
+- real world style
+- professional camera photo
+- accurate details
+- 4K quality
+`
+
+
+const image =
   `https://image.pollinations.ai/prompt/${encodeURIComponent(
-    imagePrompt
-  )}?width=1024&height=1024&nologo=true`  
+    enhancedPrompt
+  )}?width=1024&height=1024&nologo=true`
 
       setImageUrl(image)
       console.log("Image URL:", image)
@@ -458,7 +455,37 @@ Rules:
     setImgLoading(false)
   }
 
-  // ---------------- VOICE AI ----------------
+  // ---------------- REAL IMAGE SEARCH ----------------
+
+const searchRealImage = async () => {
+
+  if (!imagePrompt) {
+
+    alert("Enter image name")
+
+    return
+  }
+
+  const response = await fetch(
+  `https://api.unsplash.com/search/photos?query=${encodeURIComponent(imagePrompt)}&client_id=YOUR_ACCESS_KEY`
+)
+
+const data = await response.json()
+
+if(data.results.length > 0){
+
+  setImageUrl(
+    data.results[0].urls.regular
+  )
+
+}else{
+
+  alert("No image found")
+
+}
+}
+
+// ---------------- VOICE AI ----------------
 
    const generateVoice = async () => {
 
@@ -471,20 +498,38 @@ Rules:
 
     setVoiceLoading(true)
 
+    const cleanText = voiceText
+
+  .replace(/[#*•]/g, "")
+
+  .replace(/🎬|🏷️|🎤|📝|🖼️/g, "")
+
+  .replace(/TITLE:/gi, "")
+
+  .replace(/HASHTAGS:/gi, "")
+
+  .replace(/SCRIPT:/gi, "")
+
+  .replace(/\n+/g, " ")
+
     const speech =
-      new SpeechSynthesisUtterance(
-        voiceText
-      )
+  new SpeechSynthesisUtterance(
+    cleanText
+  )
+  speech.lang = "hi-IN"
 
-    speech.lang = "hi-IN"
+speech.rate = 0.9
 
-    speech.rate = 1
+speech.pitch = 1
 
-    speech.pitch = 1
+speech.volume = 1
 
-    window.speechSynthesis.speak(
-      speech
-    )
+
+
+
+window.speechSynthesis.speak(
+  speech
+)
     
     if (auth.currentUser) {
 
@@ -523,9 +568,19 @@ if (!isPro) {
 
   // ---------------- UI ----------------
 
-  return (
+  // ---------------- UI ----------------
 
-    <div className="min-h-screen bg-black text-white flex overflow-hidden">
+
+if (!currentUser) {
+
+  return <LoginPage />
+
+}
+
+
+return (
+
+  <div className="min-h-screen bg-black text-white flex overflow-hidden">
 
       {/* MOBILE BUTTON */}
 
@@ -629,6 +684,7 @@ if (!isPro) {
     imgLoading={imgLoading}
     imageUrl={imageUrl}
     downloadImage={downloadImage}
+    searchRealImage={searchRealImage}
   />
 
 )}
@@ -682,13 +738,30 @@ if (!isPro) {
 )}
         {activeTab === "login" && (
 
-  <LoginPage />
+  currentUser ? (
+
+    <div className="bg-zinc-900 p-6 rounded-3xl">
+      <h2 className="text-3xl font-bold">
+        Already Logged In ✅
+      </h2>
+
+      <p className="text-zinc-400 mt-2">
+        {currentUser.email}
+      </p>
+
+    </div>
+
+  ) : (
+
+    <LoginPage />
+
+  )
 
 )}
-
       </main>
 
     </div>
   )
 }
+
   

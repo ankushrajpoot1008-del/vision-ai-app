@@ -21,6 +21,14 @@ export default function ProfilePage({
       <div className="grid md:grid-cols-2 gap-5">
 
         <div className="bg-zinc-900 p-6 rounded-3xl">
+          <img
+  src={
+    auth.currentUser?.photoURL ||
+    "https://ui-avatars.com/api/?name=User"
+  }
+  alt="Profile"
+  className="w-24 h-24 rounded-full mb-4"
+/>
           <h3 className="text-zinc-400">
             Email
           </h3>
