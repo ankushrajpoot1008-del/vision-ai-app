@@ -35,7 +35,8 @@ import {
 export default function App() {
 
   // ---------------- STATES ----------------
-
+  
+  
   const [sidebarOpen, setSidebarOpen] =
     useState(false)
 
@@ -75,8 +76,14 @@ const [scriptCount, setScriptCount] =
   const [loading, setLoading] =
     useState(false)
   const [currentUser,setCurrentUser] = 
-    useState(null) 
-    useEffect(() => {
+    useState(null)
+
+
+const [appLoading, setAppLoading] = 
+    useState(true)
+
+
+useEffect(() => {
 
   const unsubscribe =
     onAuthStateChanged(
@@ -85,74 +92,93 @@ const [scriptCount, setScriptCount] =
 
         if (user) {
 
-  setCurrentUser(user)
+          setCurrentUser(user)
 
-  let userData =
-    await getUser(
-      user.email
-    )
+          let userData =
+            await getUser(
+              user.email
+            )
 
-  if (!userData) {
+          if (!userData) {
 
-    await createUser(
-      user.email
-    )
+            await createUser(
+              user.email
+            )
 
-    userData =
-      await getUser(
-        user.email
-      )
-  }
+            userData =
+              await getUser(
+                user.email
+              )
+          }
 
-  setCredits(
-    userData.credits
-  )
+          setCredits(
+            userData.credits
+          )
 
-  setIsPro(
-    userData.isPro || false
-  )
+          setIsPro(
+            userData.isPro || false
+          )
 
-  const projects =
-    await getProjects(
-      user.email
-    )
 
-  setTotalProjects(
-    projects.length
-  )
+          const projects =
+            await getProjects(
+              user.email
+            )
 
-  setVideoCount(
-  projects.filter(
-    p => p.type === "video"
-  ).length
-)
 
-setImageCount(
-  projects.filter(
-    p => p.type === "image"
-  ).length
-)
+          setTotalProjects(
+            projects.length
+          )
 
-setVoiceCount(
-  projects.filter(
-    p => p.type === "voice"
-  ).length
-)
 
-setScriptCount(
-  projects.filter(
-    p => p.type === "script"
-  ).length
-)
+          setVideoCount(
+            projects.filter(
+              p => p.type === "video"
+            ).length
+          )
 
-} else {
 
-  setCurrentUser(null)
-}
+          setImageCount(
+            projects.filter(
+              p => p.type === "image"
+            ).length
+          )
+
+
+          setVoiceCount(
+            projects.filter(
+              p => p.type === "voice"
+            ).length
+          )
+
+
+          setScriptCount(
+            projects.filter(
+              p => p.type === "script"
+            ).length
+          )
+
+
+        } else {
+
+          setCurrentUser(null)
+
+        }
+
+
+        setTimeout(() => {
+
+          setAppLoading(false)
+
+        },1500)
+
+
       }
     )
 
+
   return () => unsubscribe()
+
 
 }, [])
   // IMAGE
@@ -623,39 +649,53 @@ return (
     Welcome 👋
   </h2>
 
-  <div className="grid md:grid-cols-3 gap-4">
 
-    <div className="bg-zinc-800 p-4 rounded-2xl">
+  <div className="grid md:grid-cols-3 gap-5">
+
+
+    <div className="bg-gradient-to-br from-purple-900 to-zinc-800 p-5 rounded-3xl border border-purple-500/20 hover:scale-105 transition">
+
       <p className="text-zinc-400">
-        Credits
+        💰 Credits
       </p>
 
-      <p className="text-2xl font-bold">
+      <p className="text-3xl font-black mt-2">
         {credits}
       </p>
+
     </div>
 
-    <div className="bg-zinc-800 p-4 rounded-2xl">
+
+
+    <div className="bg-gradient-to-br from-yellow-900 to-zinc-800 p-5 rounded-3xl border border-yellow-500/20 hover:scale-105 transition">
+
       <p className="text-zinc-400">
-        Plan
+        👑 Plan
       </p>
 
-      <p className="text-2xl font-bold">
-        {isPro ? "👑 PRO" : "FREE"}
+      <p className="text-3xl font-black mt-2">
+        {isPro ? "PRO" : "FREE"}
       </p>
+
     </div>
 
-    <div className="bg-zinc-800 p-4 rounded-2xl">
+
+
+    <div className="bg-gradient-to-br from-blue-900 to-zinc-800 p-5 rounded-3xl border border-blue-500/20 hover:scale-105 transition">
+
       <p className="text-zinc-400">
-        Projects
+        🚀 Projects
       </p>
 
-      <p className="text-2xl font-bold">
+      <p className="text-3xl font-black mt-2">
         {totalProjects}
       </p>
+
     </div>
 
+
   </div>
+
 
 </div>
 
