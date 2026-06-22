@@ -636,168 +636,235 @@ return (
 
       <main className="flex-1 p-6 md:p-10 overflow-y-auto">
 
-        <h1 className="text-4xl md:text-6xl font-black mb-3 bg-gradient-to-r from-cyan-400 to-pink-500 text-transparent bg-clip-text">
-          AI Creator Dashboard
-        </h1>
-
-        <p className="text-zinc-400 mb-10">
-          Create viral AI content instantly 🚀
-        </p>
-        <div className="bg-zinc-900 rounded-3xl p-6 mb-8 border border-cyan-500/20">
-
-  <h2 className="text-2xl font-bold mb-4">
-    Welcome 👋
-  </h2>
+        <h1 className="text-4xl md:text-6xl font-black mb-3 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 text-transparent bg-clip-text animate-pulse">
+  AI Creator Dashboard 🚀
+</h1>
 
 
-  <div className="grid md:grid-cols-3 gap-5">
-
-
-    <div className="bg-gradient-to-br from-purple-900 to-zinc-800 p-5 rounded-3xl border border-purple-500/20 hover:scale-105 transition">
-
-      <p className="text-zinc-400">
-        💰 Credits
-      </p>
-
-      <p className="text-3xl font-black mt-2">
-        {credits}
-      </p>
-
-    </div>
+<p className="text-zinc-400 mb-10 text-lg">
+  Create viral AI content instantly with AI power ✨
+</p>
 
 
 
-    <div className="bg-gradient-to-br from-yellow-900 to-zinc-800 p-5 rounded-3xl border border-yellow-500/20 hover:scale-105 transition">
+<div className="bg-zinc-900 rounded-3xl p-6 mb-8 border border-cyan-500/20 shadow-lg">
 
-      <p className="text-zinc-400">
-        👑 Plan
-      </p>
 
-      <p className="text-3xl font-black mt-2">
-        {isPro ? "PRO" : "FREE"}
-      </p>
-
-    </div>
+<h2 className="text-2xl font-bold mb-5">
+  Welcome 👋 {userName || "Creator"}
+</h2>
 
 
 
-    <div className="bg-gradient-to-br from-blue-900 to-zinc-800 p-5 rounded-3xl border border-blue-500/20 hover:scale-105 transition">
-
-      <p className="text-zinc-400">
-        🚀 Projects
-      </p>
-
-      <p className="text-3xl font-black mt-2">
-        {totalProjects}
-      </p>
-
-    </div>
+<div className="grid md:grid-cols-3 gap-5">
 
 
-  </div>
+
+<div className="bg-gradient-to-br from-purple-900 to-zinc-900 p-6 rounded-3xl border border-purple-500/30 hover:scale-105 transition">
+
+
+<p className="text-zinc-400">
+💰 Credits
+</p>
+
+
+<p className="text-4xl font-black mt-2">
+{credits}
+</p>
 
 
 </div>
 
-        {/* VIDEO TAB */}
 
-        {activeTab === "video" && (
 
-  <VideoPage
-    topic={topic}
-    setTopic={setTopic}
-    generateScript={generateScript}
-    result={result}
-    loading={loading}
-    copyScript={copyScript}
-  />
 
-)}
-        {/* IMAGE TAB */}
+<div className="bg-gradient-to-br from-yellow-900 to-zinc-900 p-6 rounded-3xl border border-yellow-500/30 hover:scale-105 transition">
 
-        {activeTab === "image" && (
 
-  <ImagePage
-    imagePrompt={imagePrompt}
-    setImagePrompt={setImagePrompt}
-    generateImage={generateImage}
-    imgLoading={imgLoading}
-    imageUrl={imageUrl}
-    downloadImage={downloadImage}
-    searchRealImage={searchRealImage}
-  />
+<p className="text-zinc-400">
+👑 Plan
+</p>
 
-)}
-        {/* VOICE TAB */}
 
-        {activeTab === "voice" && (
+<p className="text-4xl font-black mt-2">
+{isPro ? "PRO" : "FREE"}
+</p>
 
-  <VoicePage
-    voiceText={voiceText}
-    setVoiceText={setVoiceText}
-    generateVoice={generateVoice}
-    stopVoice={stopVoice}
-    voiceLoading={voiceLoading}
-  />
 
-)}
-        {/* SCRIPT TAB */}
+</div>
 
-        {activeTab === "script" && (
 
-  <ScriptPage
-    topic={topic}
-    setTopic={setTopic}
-    generateScript={generateScript}
-    result={result}
-    loading={loading}
-    copyScript={copyScript}
-    downloadScript={downloadScript}
 
-  />
 
-)}dev
-        {/* LOGIN TAB */}
-        {activeTab === "history" && (
+<div className="bg-gradient-to-br from-blue-900 to-zinc-900 p-6 rounded-3xl border border-blue-500/30 hover:scale-105 transition">
 
-  <HistoryPage />
 
-)}
-        {activeTab === "profile" && (
+<p className="text-zinc-400">
+🚀 Projects
+</p>
 
-  <ProfilePage
-  credits={credits}
-  isPro={isPro}
-  totalProjects={totalProjects}
-  videoCount={videoCount}
-  imageCount={imageCount}
-  voiceCount={voiceCount}
-  scriptCount={scriptCount}
+
+<p className="text-4xl font-black mt-2">
+{totalProjects}
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+{/* VIDEO TAB */}
+
+{activeTab === "video" && (
+
+<VideoPage
+topic={topic}
+setTopic={setTopic}
+generateScript={generateScript}
+result={result}
+loading={loading}
+copyScript={copyScript}
 />
 
 )}
-        {activeTab === "login" && (
 
-  currentUser ? (
 
-    <div className="bg-zinc-900 p-6 rounded-3xl">
-      <h2 className="text-3xl font-bold">
-        Already Logged In ✅
-      </h2>
 
-      <p className="text-zinc-400 mt-2">
-        {currentUser.email}
-      </p>
 
-    </div>
 
-  ) : (
+{/* IMAGE TAB */}
 
-    <LoginPage />
+{activeTab === "image" && (
 
-  )
+<ImagePage
+imagePrompt={imagePrompt}
+setImagePrompt={setImagePrompt}
+generateImage={generateImage}
+imgLoading={imgLoading}
+imageUrl={imageUrl}
+downloadImage={downloadImage}
+searchRealImage={searchRealImage}
+/>
 
 )}
+
+
+
+
+
+
+{/* VOICE TAB */}
+
+{activeTab === "voice" && (
+
+<VoicePage
+voiceText={voiceText}
+setVoiceText={setVoiceText}
+generateVoice={generateVoice}
+stopVoice={stopVoice}
+voiceLoading={voiceLoading}
+/>
+
+)}
+
+
+
+
+
+
+{/* SCRIPT TAB */}
+
+{activeTab === "script" && (
+
+<ScriptPage
+topic={topic}
+setTopic={setTopic}
+generateScript={generateScript}
+result={result}
+loading={loading}
+copyScript={copyScript}
+downloadScript={downloadScript}
+/>
+
+)}
+
+
+
+
+
+
+{/* HISTORY */}
+
+{activeTab === "history" && (
+
+<HistoryPage />
+
+)}
+
+
+
+
+
+
+{/* PROFILE */}
+
+{activeTab === "profile" && (
+
+<ProfilePage
+
+credits={credits}
+isPro={isPro}
+totalProjects={totalProjects}
+videoCount={videoCount}
+imageCount={imageCount}
+voiceCount={voiceCount}
+scriptCount={scriptCount}
+
+/>
+
+)}
+
+
+
+
+
+
+{/* LOGIN */}
+
+{activeTab === "login" && (
+
+currentUser ?
+
+<div className="bg-zinc-900 p-6 rounded-3xl">
+
+<h2 className="text-3xl font-bold">
+Already Logged In ✅
+</h2>
+
+
+<p className="text-zinc-400 mt-2">
+{currentUser.email}
+</p>
+
+
+</div>
+
+:
+
+<LoginPage />
+
+)}
+
+
       </main>
 
     </div>
