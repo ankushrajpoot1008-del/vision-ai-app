@@ -2,213 +2,398 @@ import { deleteProject } from "../services/deleteProject"
 import { useEffect, useState } from "react"
 import { getProjects } from "../services/getProjects"
 import { auth } from "../firebase/firebase"
+import { Search, Trash2 } from "lucide-react"
+
 
 export default function HistoryPage() {
 
-  const [projects, setProjects] =
-    useState([])
 
-  const [search, setSearch] =
-    useState("")
+const [projects,setProjects] = useState([])
 
+const [search,setSearch] = useState("")
 
-  useEffect(() => {
 
-    loadProjects()
 
-  }, [])
+useEffect(()=>{
 
+loadProjects()
 
-  async function loadProjects() {
+},[])
 
-    if (!auth.currentUser) return
 
-    const data =
-      await getProjects(
-        auth.currentUser.email
-      )
 
+async function loadProjects(){
 
-    setProjects(data)
 
-  }
+if(!auth.currentUser) return
 
 
-  async function removeProject(id) {
+const data =
+await getProjects(
+auth.currentUser.email
+)
 
-    await deleteProject(id)
 
-    loadProjects()
+setProjects(data)
 
-  }
 
+}
 
-  const filteredProjects =
-    projects
-      .filter((project) =>
-        project.content
-          ?.toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
-      )
-      .sort(
-        (a, b) =>
-          b.createdAt?.seconds -
-          a.createdAt?.seconds
-      )
 
 
-  return (
 
-    <div className="bg-zinc-900 rounded-3xl p-8">
+async function removeProject(id){
 
+await deleteProject(id)
 
-      <h2 className="text-3xl font-bold mb-6">
-        Saved Projects
-      </h2>
+loadProjects()
 
+}
 
-      <input
 
-        type="text"
 
-        placeholder="Search your history..."
 
-        value={search}
+const filteredProjects =
 
-        onChange={(e)=>
-          setSearch(e.target.value)
-        }
+projects
 
-        className="w-full mb-6 p-4 rounded-2xl bg-zinc-800 border border-zinc-700 outline-none"
+.filter((project)=>
 
-      />
+project.content
+?.toLowerCase()
+.includes(
+search.toLowerCase()
+)
 
+)
 
-      {filteredProjects.length === 0 ? (
+.sort(
+(a,b)=>
+b.createdAt?.seconds -
+a.createdAt?.seconds
+)
 
 
-        <p className="text-zinc-400">
-          No saved projects found
-        </p>
 
 
-      ) : (
 
+return (
 
-        <div className="space-y-4">
 
+<div className="
 
-          {filteredProjects.map((project) => (
+bg-zinc-900
 
+rounded-3xl
 
-            <div
+p-8
 
-              key={project.id}
+border
 
-              className="bg-zinc-800 p-4 rounded-2xl"
+border-blue-500/20
 
-            >
+shadow-xl
 
+">
 
-              <h3 className="font-bold mb-2">
 
+<h2 className="
 
-                {project.type === "video" &&
-                  "🎬 Video"}
+text-4xl
 
-                {project.type === "image" &&
-                  "🖼️ Image"}
+font-black
 
-                {project.type === "voice" &&
-                  "🎤 Voice"}
+mb-3
 
-                {project.type === "script" &&
-                  "📝 Script"}
+bg-gradient-to-r
 
+from-blue-400
 
-              </h3>
+to-cyan-400
 
+text-transparent
 
-              {project.createdAt && (
+bg-clip-text
 
+">
 
-                <p className="text-xs text-zinc-500 mb-2">
+📚 Saved History
 
-                  {project.createdAt
-                    .toDate()
-                    .toLocaleString()}
+</h2>
 
-                </p>
 
 
-              )}
+<p className="text-zinc-400 mb-8">
 
+Your AI creations collection 🚀
 
+</p>
 
-              {project.type === "image" ? (
 
 
-                <img
 
-                  src={project.content}
 
-                  alt="AI"
+<div className="relative mb-6">
 
-                  className="rounded-2xl max-w-sm"
 
-                />
+<Search
 
+className="absolute left-4 top-4 text-zinc-500"
 
-              ) : (
+/>
 
 
-                <p className="text-zinc-300 whitespace-pre-wrap">
+<input
 
-                  {project.content?.slice(0,200)}
 
-                  {project.content?.length > 200
-                    ? "..."
-                    : ""}
+value={search}
 
-                </p>
 
+onChange={(e)=>
+setSearch(e.target.value)
+}
 
-              )}
 
+placeholder="Search your history..."
 
 
-              <button
+className="
 
-                onClick={() =>
-                  removeProject(project.id)
-                }
+w-full
 
-                className="mt-3 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl"
+p-4
 
-              >
+pl-12
 
-                Delete
+rounded-2xl
 
-              </button>
+bg-zinc-800
 
+border
 
+border-zinc-700
 
-            </div>
+outline-none
 
+focus:ring-2
 
-          ))}
+focus:ring-blue-500
 
+"
 
-        </div>
+/>
 
 
-      )}
+</div>
 
 
-    </div>
 
-  )
+
+
+
+{
+
+filteredProjects.length===0 ?
+
+<p className="text-zinc-400">
+
+No projects found
+
+</p>
+
+
+:
+
+
+<div className="space-y-5">
+
+
+{
+
+filteredProjects.map((project)=>(
+
+
+<div
+
+key={project.id}
+
+className="
+
+bg-zinc-800
+
+p-5
+
+rounded-3xl
+
+border
+
+border-zinc-700
+
+hover:scale-[1.02]
+
+transition
+
+"
+
+>
+
+
+
+<h3 className="text-xl font-bold mb-2">
+
+
+{
+
+project.type==="video" && "🎬 Video"
+
+}
+
+{
+
+project.type==="image" && "🖼️ Image"
+
+}
+
+{
+
+project.type==="voice" && "🎤 Voice"
+
+}
+
+{
+
+project.type==="script" && "📝 Script"
+
+}
+
+
+</h3>
+
+
+
+
+
+{
+
+project.createdAt &&
+
+<p className="text-xs text-zinc-500 mb-3">
+
+{project.createdAt
+.toDate()
+.toLocaleString()}
+
+</p>
+
+}
+
+
+
+
+
+{
+
+project.type==="image"
+
+?
+
+<img
+
+src={project.content}
+
+alt="AI"
+
+className="rounded-2xl max-w-sm"
+
+/>
+
+
+:
+
+<p className="text-zinc-300 whitespace-pre-wrap">
+
+{project.content?.slice(0,200)}
+
+{project.content?.length>200
+?"..."
+:""}
+
+</p>
+
+
+}
+
+
+
+
+
+
+<button
+
+
+onClick={()=>removeProject(project.id)}
+
+
+className="
+
+mt-4
+
+px-5
+
+py-3
+
+rounded-xl
+
+bg-red-500
+
+hover:bg-red-600
+
+flex
+
+items-center
+
+gap-2
+
+font-bold
+
+"
+
+
+>
+
+
+<Trash2 size={18}/>
+
+Delete
+
+
+</button>
+
+
+
+
+</div>
+
+
+
+))
+
+
+}
+
+
+
+</div>
+
+
+}
+
+
+
+</div>
+
+
+)
+
 
 }
